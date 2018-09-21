@@ -1,0 +1,60 @@
+#import pgzrun test.py
+
+class Ball:
+    def __init__(self, x, y):
+        self.act = Actor("ball")
+        self.act.x = x
+        self.act.y = y
+        self.direction = 1
+
+    def draw(self):
+        self.act.draw()
+
+    def update(self):
+        self.act.x += self.direction
+
+    def clicked(self):
+        self.direction *= -1
+
+class Love:
+    def __init__(self, x, y):
+        self.act = Actor("love")
+        self.act.x = x
+        self.act.y = y
+        self.direction = 1
+
+    def draw(self):
+        self.act.draw()
+
+    def update(self):
+        self.act.x += self.direction
+
+    def clicked(self):
+        self.direction *= -1
+
+# creating some balls
+balls = [Ball(0, 180), Ball(120, 540)]
+loves = [Love(60, 360)]
+
+
+# event methods for all balls
+def draw():
+    screen.fill((0, 0, 0))
+    for ball in balls:
+        ball.draw()
+    for love in loves:
+        love.draw()
+
+
+def update():
+    for ball in balls:
+        ball.update()
+    for love in loves:
+        love.update()
+
+
+def on_mouse_down(pos):
+    for ball in balls:
+        ball.clicked()
+    for love in loves:
+        love.clicked()
