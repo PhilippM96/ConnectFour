@@ -61,17 +61,33 @@ class Controller:
                     if all(all(x != 0 for x in v) for v in field):  # check for draw
                         __result = "draw"
                     if height < (len(field) - 3):
-                        if field[height][length] == player and field[height+1][length] == player and field[height+2][length] == player and field[height+3][length] == player:  # check height
-                            __result = player
+                        if 0 <= (height + 3) <= len(field[0]) and 0 <= length <= len(field):
+                            if field[height][length] == player and field[height+1][length] == player and field[height+2][length] == player and field[height+3][length] == player:  # check height
+                                    __result = player
+                                    print("Sieg durch height")  # Debug!
+                                    print(height)  # Debug!
+                                    print(length)  # Debug!
                     if length < (len(field[0]) - 3):
-                        if field[height][length] == player and field[height][length+1] == player and field[height][length+2] == player and field[height][length+3] == player:  # check length
-                            __result = player
+                        if 0 <= height <= len(field[0]) and 0 <= (length + 3) <= len(field):
+                            if field[height][length] == player and field[height][length+1] == player and field[height][length+2] == player and field[height][length+3] == player:  # check length
+                                __result = player
+                                print("Sieg durch length")  # Debug!
+                                print(height)  # Debug!
+                                print(length)  # Debug!
                     if length < (len(field[0]) - 3) and height < (len(field) - 3):
-                        if field[height][length] == player and field[height+1][length+1] == player and field[height+2][length+2] == player and field[height+3][length+3] == player:  # check diagonal
-                            __result = player
+                        if 0 <= (height + 3) <= len(field[0]) and 0 <= (length + 3) <= len(field):
+                            if field[height][length] == player and field[height+1][length+1] == player and field[height+2][length+2] == player and field[height+3][length+3] == player:  # check diagonal
+                                __result = player
+                                print("Sieg durch diagonal 1")  # Debug!
+                                print(height)  # Debug!
+                                print(length)  # Debug!
                     if length < (len(field[0]) + 3) and height < (len(field) - 3):
-                        if field[height][length] == player and field[height+1][length-1] == player and field[height+2][length-2] == player and field[height+3][length-3] == player:  # check diagonal
-                            __result = player
+                        if 0 <= (height + 3) <= len(field[0]) and 0 <= (length - 3) <= len(field):
+                            if field[height][length] == player and field[height+1][length-1] == player and field[height+2][length-2] == player and field[height+3][length-3] == player:  # check diagonal
+                                __result = player
+                                print("Sieg durch diagonal 2")  # Debug!
+                                print(height)  # Debug!
+                                print(length)  # Debug!
         return __result
 
     def game_end(self, game_result, default_color):
