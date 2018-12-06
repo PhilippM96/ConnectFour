@@ -179,7 +179,7 @@ class Console(View):
                     elif i == field_size[0] - 1:
                         print("Die Spalte ist voll.")
         elif player.difficulty == "random":
-            time.sleep(1)
+            #time.sleep(1)
             player_turn = True
             while player_turn:
                 __column = 0
@@ -193,50 +193,194 @@ class Console(View):
                                                                   default_color, __column))
                             break
         else:  # Player difficulty equals smart
-            time.sleep(1)
+            #time.sleep(1)
+            #KI should not start first
             player_turn = True
             while player_turn:
                 __column = 0
+                __risk_field = []
                 while __column < 1 or __column > field_size[0]:
-                    #  __risk_field = [0]
                     for height in range(0, len(field)):
                         for length in range(0, len(field[0])):
                             for token in range(1, player_amount + 1):
                                 if height < (len(field) - 3):
-                                    if field[height + 3][length] == token and field[height + 2][length] == token and field[height + 1][length] == token and field[height][length] == 0:  # check height
-                                        __column = length + 1
-                                    if field[height + 3][length] == 0 and field[height + 2][length] == token and field[height + 1][length] == token and field[height][length] == token:  # check height
-                                        __column = length - 3
+                                    try:
+                                        if field[height + 3][length] == token and field[height + 2][length] == token and field[height + 1][length] == token and field[height][length] == 0:  # check height
+                                            __column = length + 1
+                                            print("A")
+                                            print(__column)
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height + 3][length] == 0 and field[height + 2][length] == token and field[height + 1][length] == token and field[height][length] == token:  # check height nonsense
+                                            __column = length - 3
+                                            print("B")
+                                            print(__column)
+                                    except IndexError:
+                                        print("IE")
                                 if length < (len(field[0]) - 3):
-                                    if field[height][length] == token and field[height][length + 1] == token and field[height][length + 2] == token and field[height][length + 3] == 0:  # check length
-                                        if height != len(field) - 1:
-                                            if field[height + 1][length] != 0:
+                                    try:
+                                        if field[height][length] == token and field[height][length + 1] == token and field[height][length + 2] == token and field[height][length + 3] == 0:  # check length
+                                            if height != len(field) - 1:
+                                                if field[height + 1][length + 3] != 0:
+                                                    __column = length + 4
+                                                    print("C")
+                                                    print(__column)
+                                                elif field[height + 2][length + 3] != 0:
+                                                    __risk_field.append(length + 4)
+                                                    print("C+")
+                                            else:
                                                 __column = length + 4
-                                            #  else:
-                                            #      __risk_field.append(length + 4)
-                                        else:
-                                            __column = length + 4
-                                    if field[height][length] == 0 and field[height][length + 1] == token and field[height][length + 2] == token and field[height][length + 3] == token:  # check length
-                                        if height != len(field) - 1:
+                                                print("C-")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == 0 and field[height][length + 1] == token and field[height][length + 2] == token and field[height][length + 3] == token:  # check length
+                                            if height != len(field) - 1:
+                                                if field[height + 1][length] != 0:
+                                                    __column = length + 1
+                                                    print("D")
+                                                    print(__column)
+                                                elif field[height + 2][length] != 0:
+                                                    __risk_field.append(length + 1)
+                                                    print("D+")
+                                            else:
+                                                __column = length + 1
+                                                print("D-")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == token and field[height][length + 1] == 0 and field[height][length + 2] == token and field[height][length + 3] == token:  # check length
+                                            if height != len(field) - 1:
+                                                if field[height + 1][length + 1] != 0:
+                                                    __column = length + 2
+                                                    print("Z")
+                                                    print(__column)
+                                                elif field[height + 2][length + 1] != 0:
+                                                    __risk_field.append(length + 2)
+                                                    print("Z+")
+                                            else:
+                                                __column = length + 2
+                                                print("Z-")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == token and field[height][length + 1] == token and field[height][length + 2] == 0 and field[height][length + 3] == token:  # check length
+                                            if height != len(field) - 1:
+                                                if field[height + 1][length + 2] != 0:
+                                                    __column = length + 3
+                                                    print("Y")
+                                                    print(__column)
+                                                elif field[height + 2][length + 2] != 0:
+                                                    __risk_field.append(length + 3)
+                                                    print("Y+")
+                                            else:
+                                                __column = length + 3
+                                                print("Y-")
+                                    except IndexError:
+                                        print("IE")
+                                if length < (len(field[0]) - 3) and height < (len(field) - 3):
+                                    try:
+                                        if field[height][length] == token and field[height + 1][length + 1] == token and field[height + 2][length + 2] == token and field[height + 3][length + 3] == 0:  # check diagonal
+                                            if field[height + 4][length + 3] != 0:
+                                                __column = length + 4
+                                                print("E")
+                                                print(__column)
+                                            elif field[height + 5][length + 3] != 0:
+                                                __risk_field.append(length + 4)
+                                                print("E+")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == 0 and field[height + 1][length + 1] == token and field[height + 2][length + 2] == token and field[height + 3][length + 3] == token:  # check diagonal
                                             if field[height + 1][length] != 0:
                                                 __column = length + 1
-                                            #  else:
-                                            #      __risk_field.append(length + 1)
-                                        else:
-                                            __column = length + 1
-                                if length < (len(field[0]) - 3) and height < (len(field) - 3):
-                                    if field[height][length] == token and field[height + 1][length + 1] == token and field[height + 2][length + 2] == token and field[height + 3][length + 3] == 0:  # check diagonal
-                                        __column = length + 4
-                                    if field[height][length] == 0 and field[height + 1][length + 1] == token and field[height + 2][length + 2] == token and field[height + 3][length + 3] == token:  # check diagonal
-                                        __column = length + 1
+                                                print("F")
+                                                print(__column)
+                                            elif field[height + 2][length] != 0:
+                                                __risk_field.append(length + 1)
+                                                print("F+")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == token and field[height + 1][length + 1] == 0 and field[height + 2][length + 2] == token and field[height + 3][length + 3] == token:  # check diagonal
+                                            if field[height + 2][length + 1] != 0:
+                                                __column = length + 2
+                                                print("G")
+                                                print(__column)
+                                            elif field[height + 3][length + 1] != 0:
+                                                __risk_field.append(length + 2)
+                                                print("G+")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == token and field[height + 1][length + 1] == token and field[height + 2][length + 2] == 0 and field[height + 3][length + 3] == token:  # check diagonal
+                                            if field[height + 3][length + 2] != 0:
+                                                __column = length + 3
+                                                print("H")
+                                                print(__column)
+                                            elif field[height + 4][length + 2] != 0:
+                                                __risk_field.append(length + 3)
+                                                print("H+")
+                                    except IndexError:
+                                        print("IE")
                                 if length > 2 and height < (len(field) - 3):
-                                    if field[height][length] == token and field[height + 1][length - 1] == token and field[height + 2][length - 2] == token and field[height + 3][length - 3] == 0:  # check diagonal
-                                        __column = length - 4
-                                    if field[height][length] == 0 and field[height + 1][length - 1] == token and field[height + 2][length - 2] == token and field[height + 3][length - 3] == token:  # check diagonal
-                                        __column = length + 1
+                                    try:
+                                        if field[height][length] == token and field[height + 1][length - 1] == token and field[height + 2][length - 2] == token and field[height + 3][length - 3] == 0:  # check diagonal
+                                            if field[height + 4][length - 3] != 0:
+                                                __column = length - 2
+                                                print("I")
+                                                print(__column)
+                                            elif field[height + 5][length - 3] != 0:
+                                                __risk_field.append(length - 2)
+                                                print("I+")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == 0 and field[height + 1][length - 1] == token and field[height + 2][length - 2] == token and field[height + 3][length - 3] == token:  # check diagonal
+                                            if field[height + 1][length] != 0:
+                                                __column = length + 1
+                                                print("J")
+                                                print(__column)
+                                            elif field[height + 2][length] != 0:
+                                                __risk_field.append(length + 1)
+                                                print("J+")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == token and field[height + 1][length - 1] == 0 and field[height + 2][length - 2] == token and field[height + 3][length - 3] == token:  # check diagonal
+                                            if field[height + 2][length - 1] != 0:
+                                                __column = length
+                                                print("K")
+                                                print(__column)
+                                            elif field[height + 3][length - 1] != 0:
+                                                __risk_field.append(length)
+                                                print("K+")
+                                    except IndexError:
+                                        print("IE")
+                                    try:
+                                        if field[height][length] == token and field[height + 1][length - 1] == token and field[height + 2][length - 2] == 0 and field[height + 3][length - 3] == token:  # check diagonal
+                                            if field[height + 3][length - 2] != 0:
+                                                __column = length - 1
+                                                print("L")
+                                                print(__column)
+                                            elif field[height + 4][length - 2] != 0:
+                                                __risk_field.append(length - 1)
+                                                print("L+")
+                                    except IndexError:
+                                        print("IE")
+                    print(__risk_field)
                     if __column == 0:
-                        #  while __column in __risk_field:
                         __column = random.randint(1, field_size[0])
+                        i = 0
+                        while __risk_field.__contains__(__column):  # do 100 times?!
+                            __column = random.randint(1, field_size[0])
+                            i += 1
+                            if i > 90:
+                                for i in range(0, field_size[0]):
+                                    if field[i][0] == 0:
+                                        __column = i + 1
+                                break
                     for i in range(0, field_size[0]):
                         if field[field_size[1] - i - 1][__column - 1] == 0:
                             field[field_size[1] - i - 1][__column - 1] = player.turn
